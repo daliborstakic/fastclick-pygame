@@ -19,7 +19,11 @@ def is_clicked(pos, circle):
     """ If the mouse clicked on the circle """
     x, y = pos
 
-    if circle.x > x > circle.x + circle.radius and circle.y > y > circle.y + circle.radius:
+    # Actual x and y, not the center
+    circle_x = circle.x - circle.radius // 2
+    circle_y = circle.y - circle.radius // 2
+
+    if circle_x < x < circle_x + circle.radius and circle_y < y < circle_y + circle.radius:
         return True
 
     return False
@@ -54,6 +58,11 @@ def main(surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            if pygame.mouse.get_pressed()[0]:
+                pos = pygame.mouse.get_pos()
+
+                if is_clicked(pos, circle):
+                    circle = random_circle()
 
         draw(surface, circle)
 
