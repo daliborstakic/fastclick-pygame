@@ -1,2 +1,3 @@
 venv/
 fastclick/__pycache__/
+.vscode/
