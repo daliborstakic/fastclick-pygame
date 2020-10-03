@@ -1,6 +1,7 @@
 """ Importing pygame """
-from random import randint
 import pygame
+""" Importing randint method """
+from random import randint
 """ Importing Circle class """
 from fastclick.circle import Circle
 
@@ -34,9 +35,12 @@ def random_circle():
 
     return Circle(x, y, radius)
 
-def draw(surface):
+def draw(surface, circle):
     """ Renders the screen """
     surface.fill(WHITE)
+
+    # Draws the circle
+    circle.draw(surface)
 
     pygame.display.update()
 
@@ -44,12 +48,14 @@ def main(surface):
     """ Main function """
     run = True
 
+    circle = random_circle()
+
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-        draw(surface)
+        draw(surface, circle)
 
     pygame.quit()
 
