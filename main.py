@@ -32,7 +32,7 @@ def random_circle():
     """ Returns a circle on a random location """
 
     # Circle parameters
-    radius = randint(10, 30)
+    radius = randint(10, 20)
 
     x = randint(radius, WIDTH - radius)
     y = randint(radius, WIDTH - radius)
