@@ -21,7 +21,10 @@ def is_clicked(pos, circle):
     return False
 
 def draw(surface):
-    pass
+    """ Renders the screen """
+    surface.fill(WHITE)
+
+    pygame.display.update()
 
 def main(surface):
     """ Main function """
@@ -29,10 +32,15 @@ def main(surface):
 
     while run:
         for event in pygame.event.get():
-            if event.type == pygame.quit:
+            if event.type == pygame.QUIT:
                 run = False
+
+        draw(surface)
 
     pygame.quit()
 
+win = pygame.display.set_mode((WIDTH, WIDTH))
+pygame.display.set_caption("Fast Clicker")
+
 if __name__ == '__main__':
-    main()
+    main(win)
