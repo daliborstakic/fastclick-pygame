@@ -1,5 +1,8 @@
 """ Importing pygame """
+from random import randint
 import pygame
+""" Importing Circle class """
+from fastclick.circle import Circle
 
 # Initializing pygame
 pygame.init()
@@ -19,6 +22,17 @@ def is_clicked(pos, circle):
         return True
 
     return False
+
+def random_circle():
+    """ Returns a circle on a random location """
+
+    # Circle parameters
+    radius = randint(10, 30)
+
+    x = randint(radius, WIDTH - radius)
+    y = randint(radius, WIDTH - radius)
+
+    return Circle(x, y, radius)
 
 def draw(surface):
     """ Renders the screen """
