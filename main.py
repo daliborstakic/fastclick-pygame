@@ -19,6 +19,7 @@ BLACK = (0, 0, 0)
 
 # Font
 text_font = pygame.font.SysFont('Arial', 30)
+end_font = pygame.font.SysFont('Arial', 20)
 
 def is_clicked(pos, circle):
     """ If the mouse clicked on the circle """
@@ -60,6 +61,23 @@ def draw(surface, circle, score, seconds):
 
     pygame.display.update()
 
+def display_end_result(surface, seconds, score):
+    """ Displays the result when the time reaches 30 seconds """
+
+    # Number of clicks per minute
+    speed = round(score / seconds, 2)
+
+    # Rendering the screen
+    surface.fill(WHITE)
+
+    end_text = end_font.render(f"Your speed was {speed} clicks per second.", 1, BLACK)
+    surface.blit(end_text, ((WIDTH - end_text.get_width()) // 2, (WIDTH - end_text.get_height()) // 2))
+
+    pygame.display.update()
+
+    # End the function after a second
+    pygame.time.delay(1000)
+
 def main(surface):
     """ Main function """
     run = True
@@ -87,8 +105,13 @@ def main(surface):
 
         draw(surface, circle, score, seconds)
 
+        if seconds >= 30:
+            display_end_result(surface, seconds, score)
+            run = False
+
     pygame.quit()
 
+# Screen init
 win = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("Fast Clicker")
 
