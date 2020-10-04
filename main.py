@@ -5,7 +5,7 @@ from random import randint
 """ Importing Circle class """
 from fastclick.circle import Circle
 """ Distance calculation """
-from math import dist, hypot
+from math import hypot
 
 # Initializing pygame
 pygame.init()
@@ -43,7 +43,7 @@ def random_circle():
 
     return Circle(x, y, radius)
 
-def draw(surface, circle, score):
+def draw(surface, circle, score, seconds):
     """ Renders the screen """
     surface.fill(WHITE)
 
@@ -53,6 +53,10 @@ def draw(surface, circle, score):
     # Score
     score_text = text_font.render(f"Score: {score}", 1, BLACK)
     surface.blit(score_text, (10, 10))
+
+    # Time
+    time_text = text_font.render(f"Time: {seconds}", 1, BLACK)
+    surface.blit(time_text, (WIDTH - time_text.get_width() - 10, 10))
 
     pygame.display.update()
 
@@ -64,7 +68,13 @@ def main(surface):
     circle = random_circle()
     score = 0
 
+    # Start ticks
+    start_ticks = pygame.time.get_ticks()
+
     while run:
+        # Counting seconds
+        seconds = (pygame.time.get_ticks() - start_ticks) // 1000
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -75,7 +85,7 @@ def main(surface):
                     circle = random_circle()
                     score += 1
 
-        draw(surface, circle, score)
+        draw(surface, circle, score, seconds)
 
     pygame.quit()
 
