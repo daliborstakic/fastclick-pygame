@@ -4,6 +4,8 @@ import pygame
 from random import randint
 """ Importing Circle class """
 from fastclick.circle import Circle
+""" Distance calculation """
+from math import dist, hypot
 
 # Initializing pygame
 pygame.init()
@@ -15,15 +17,17 @@ WIDTH = 500
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
+# Font
+text_font = pygame.font.SysFont('Arial', 30)
+
 def is_clicked(pos, circle):
     """ If the mouse clicked on the circle """
     x, y = pos
 
-    # Actual x and y, not the center
-    circle_x = circle.x - circle.radius // 2
-    circle_y = circle.y - circle.radius // 2
+    # Distance to the center
+    distance = hypot(x - circle.x, y - circle.y)
 
-    if circle_x < x < circle_x + circle.radius and circle_y < y < circle_y + circle.radius:
+    if distance <= circle.radius:
         return True
 
     return False
@@ -39,12 +43,16 @@ def random_circle():
 
     return Circle(x, y, radius)
 
-def draw(surface, circle):
+def draw(surface, circle, score):
     """ Renders the screen """
     surface.fill(WHITE)
 
     # Draws the circle
     circle.draw(surface)
+
+    # Score
+    score_text = text_font.render(f"Score: {score}", 1, BLACK)
+    surface.blit(score_text, (10, 10))
 
     pygame.display.update()
 
@@ -52,7 +60,9 @@ def main(surface):
     """ Main function """
     run = True
 
+    # Game variables
     circle = random_circle()
+    score = 0
 
     while run:
         for event in pygame.event.get():
@@ -63,8 +73,9 @@ def main(surface):
 
                 if is_clicked(pos, circle):
                     circle = random_circle()
+                    score += 1
 
-        draw(surface, circle)
+        draw(surface, circle, score)
 
     pygame.quit()
 
