@@ -7,7 +7,7 @@ class Circle():
         self.x = x
         self.y = y
         self.radius = radius
-        self.color = choice((255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0))
+        self.color = choice([(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0)])
 
     def draw(self, surface):
         """ Draws the circle """
