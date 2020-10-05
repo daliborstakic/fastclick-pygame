@@ -17,6 +17,10 @@ WIDTH = 500
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
+# Creating the highscore file if it doesn't exist
+with open('highscores.txt', 'a+', newline='\n') as score_file:
+    pass
+
 # Font
 text_font = pygame.font.SysFont('Arial', 30)
 end_font = pygame.font.SysFont('Arial', 20)
@@ -44,7 +48,7 @@ def random_circle():
 
     return Circle(x, y, radius)
 
-def draw(surface, circle, score, seconds):
+def draw(surface, circle, score, seconds, highscore):
     """ Renders the screen """
     surface.fill(WHITE)
 
@@ -54,6 +58,10 @@ def draw(surface, circle, score, seconds):
     # Score
     score_text = text_font.render(f"Score: {score}", 1, BLACK)
     surface.blit(score_text, (10, 10))
+
+    # High score
+    high_text = end_font.render(f"High score: {highscore}", 1, BLACK)
+    surface.blit(high_text, ((WIDTH // 2 - high_text.get_width() // 2), 5 + score_text.get_height() - high_text.get_height()))
 
     # Time
     time_text = text_font.render(f"Time: {seconds}", 1, BLACK)
@@ -78,6 +86,19 @@ def display_end_result(surface, seconds, score):
     # End the function after a second
     pygame.time.delay(1000)
 
+def get_high_score():
+    with open('highscores.txt', 'r') as score_file:   
+        scores = [line for line in score_file.readlines()]
+
+    if not scores:
+        return 0
+
+    return max(scores)
+
+def write_score(score, seconds):
+    with open('highscores.txt', 'a') as score_file:
+        score_file.write(f"{round(score / seconds, 2)}\n")
+
 def main(surface):
     """ Main function """
     run = True
@@ -85,6 +106,7 @@ def main(surface):
     # Game variables
     circle = random_circle()
     score = 0
+    highscore = get_high_score().strip()
 
     # Start ticks
     start_ticks = pygame.time.get_ticks()
@@ -103,10 +125,11 @@ def main(surface):
                     circle = random_circle()
                     score += 1
 
-        draw(surface, circle, score, seconds)
+        draw(surface, circle, score, seconds, highscore)
 
         if seconds >= 30:
             display_end_result(surface, seconds, score)
+            write_score(score, seconds)
             run = False
 
     pygame.quit()
